@@ -74,4 +74,4 @@ My_Model.Evaluate()
 predictions = My_Model.Predict(data)
 ```
 
-#### NOTE: More details will be available soon!!!# Static_Features_Classifier
+#### NOTE: More details will be available soon!!!
