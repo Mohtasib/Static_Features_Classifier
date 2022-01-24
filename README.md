@@ -8,8 +8,7 @@ This is a static features classifier for Point-Could clusters using an Attention
 # Installation
 
 ```bash
-$ mkdir Static_Features_Classifier
-$ git clone >>>>>>>
+$ git clone https://github.com/Mohtasib/Static_Features_Classifier.git
 $ cd Static_Features_Classifier
 $ pip install -e .
 ```
