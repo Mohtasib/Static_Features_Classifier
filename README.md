@@ -10,6 +10,8 @@ This is a static features classifier for Point-Could clusters using an Attention
 ```bash
 $ git clone https://github.com/Mohtasib/Static_Features_Classifier.git
 $ cd Static_Features_Classifier
+$ conda create -n sfc_env python==3.6.10
+$ conda activate sfc_env
 $ pip install -e .
 ```
 
