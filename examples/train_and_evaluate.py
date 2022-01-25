@@ -10,9 +10,6 @@ NUM_FEATURES = 24
 My_Model_Logs_DIR = './logs/'
 My_Model_Weights = My_Model_Logs_DIR + 'Best_Attention_RNN_ckpt.h5'
 
-# Create the dataset
-features, labels = create_dataset(DATA_PATH, NUM_FEATURES)
-
 # Create the model
 My_Model = Attention_RNN(   Logs_DIR=My_Model_Logs_DIR,
                             LSTM_units=32,
@@ -21,19 +18,17 @@ My_Model = Attention_RNN(   Logs_DIR=My_Model_Logs_DIR,
                             seq_n_features_out=1,
                             Print_Model_Summary=True)
 
-# Load the data into the model
-My_Model.x_train = features
-My_Model.y_train = labels
-My_Model.x_test = features
-My_Model.y_test = labels
+# Create the dataset and load it into the model
+My_Model.x_train, My_Model.y_train = create_dataset(DATA_PATH + 'train/', NUM_FEATURES)
+My_Model.x_test, My_Model.y_test = create_dataset(DATA_PATH + 'test/', NUM_FEATURES)
 
 # Train the model
-# My_Model.Fit()
+My_Model.Fit()
 
 # Evaluate the model
-# My_Model.Load_Model(My_Model_Weights)
-# My_Model.Evaluate()
+My_Model.Load_Model(My_Model_Weights)
+My_Model.Evaluate()
 
 # Predict using the model
-label = My_Model.Predict(features[50])
-print(label)
+# label = My_Model.Predict(features[50])
+# print(label)

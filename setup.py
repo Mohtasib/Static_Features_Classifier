@@ -11,6 +11,7 @@ setup(name='sfc',
       install_requires=['numpy==1.19.2', 
 			'pandas==1.1.5',
 			'scikit-learn==0.24.2',
+			'h5py==2.10.0',
 			'tensorflow-gpu==1.14.0',
 			'keras==2.2.5']  # And any other dependencies pepper env needs
 )
