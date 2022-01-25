@@ -17,7 +17,7 @@ $ pip install -e .
 
 # Example Code
 
-You can simple run the following command to run a sample code
+You can simply run the following command to execute a sample code
 
 ```bash
 $ python examples/train_and_evaluate.py
