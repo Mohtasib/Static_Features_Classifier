@@ -13,7 +13,7 @@ setup(name='sfc',
 			'scikit-learn==0.24.2',
 			'h5py==2.10.0',
 			'tensorflow-gpu==1.14.0',
-			'keras==2.2.5']  # And any other dependencies pepper env needs
+			'keras==2.2.5']  # And any other needed dependencies
 )
 
 # python==3.6.10
