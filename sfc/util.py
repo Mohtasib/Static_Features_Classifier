@@ -22,13 +22,15 @@ def get_files_list(path, file_type='.csv'):
     csv_list = [os.path.join(path, j) for j in files if j.endswith(file_type)]
     return csv_list
 
-def load_from_csv(path, num_features=24):
+def load_from_csv(path, max_num_timesteps, num_features=24):
     """Reads the data for one map from a .csv file
 
     Parameters
     ----------
     path : str
         path to the .csv file
+    max_num_timesteps : int
+        the maximum number of timesteps in the input sequence
     num_features : int, optional
         the number of features for that describe the object at each timestep
 
@@ -53,18 +55,29 @@ def load_from_csv(path, num_features=24):
         arr = np.reshape(arr, (arr.shape[0], 1, arr.shape[1]))
         features.append(arr)
 
+    features = np.hstack(features)
+
     # Get the labels
     labels =  pd.DataFrame(data, columns=['Label']).to_numpy()
+    
+    # Make sure to have the correct sequence length
+    if max_num_timesteps > num_timesteps:
+        all_features = np.zeros((features.shape[0], max_num_timesteps, features.shape[2]))
+        all_features[:,features.shape[1]:,:] = features
+    else:
+        all_features = features
 
-    return np.hstack(features), labels
+    return all_features, labels
 
-def create_dataset(data_path, num_features=24):
+def create_dataset(data_path, max_num_timesteps, num_features=24):
     """Creates a dataset from the .csv files in the 'data_path' directory
 
     Parameters
     ----------
     path : str
         path to the .csv files
+    max_num_timesteps : int
+        the maximum number of timesteps in the input sequence
     num_features : int, optional
         the number of features for that describe the object at each timestep
 
@@ -81,7 +94,7 @@ def create_dataset(data_path, num_features=24):
     # Load the data from the .csv files
     all_features, all_labels = [], []
     for map_data in maps_data:
-        features, labels = load_from_csv(path=map_data, num_features=num_features)
+        features, labels = load_from_csv(path=map_data, max_num_timesteps=max_num_timesteps, num_features=num_features)
         all_features.append(features)
         all_labels.append(labels)
 

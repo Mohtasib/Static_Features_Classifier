@@ -6,6 +6,7 @@ from sfc.models.Attention_RNN import Attention_RNN
 
 # Define some constants
 DATA_PATH = './dataset/'
+MAX_SEQ_LEN = 4
 NUM_FEATURES = 24
 My_Model_Logs_DIR = './logs/'
 My_Model_Weights = My_Model_Logs_DIR + 'Best_Attention_RNN_ckpt.h5'
@@ -19,8 +20,8 @@ My_Model = Attention_RNN(   Logs_DIR=My_Model_Logs_DIR,
                             Print_Model_Summary=True)
 
 # Create the dataset and load it into the model
-My_Model.x_train, My_Model.y_train = create_dataset(DATA_PATH + 'train/', NUM_FEATURES)
-My_Model.x_test, My_Model.y_test = create_dataset(DATA_PATH + 'test/', NUM_FEATURES)
+My_Model.x_train, My_Model.y_train = create_dataset(DATA_PATH + 'train/', MAX_SEQ_LEN, NUM_FEATURES)
+My_Model.x_test, My_Model.y_test = create_dataset(DATA_PATH + 'test/', MAX_SEQ_LEN, NUM_FEATURES)
 
 # Train the model
 My_Model.Fit()
