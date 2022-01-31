@@ -33,6 +33,7 @@ from sfc.models.Attention_RNN import Attention_RNN
 
 #### 2. Define the constants:
 ```bash
+MAX_SEQ_LEN = ...
 NUM_FEATURES = ...
 ```
 
@@ -43,22 +44,15 @@ My_Model_Logs_DIR = ...
 My_Model_Weights = My_Model_Logs_DIR + 'Best_Attention_RNN_ckpt.h5'
 ```
 
-#### 4. Create the dataset:
-```bash
-features, labels = create_dataset(DATA_PATH, NUM_FEATURES)
-```
-
-#### 5. Create the model:
+#### 4. Create the model:
 ```bash
 My_Model = Attention_RNN(Logs_DIR=My_Model_Logs_DIR)
 ```
 
-#### 6. Load the data into the model:
+#### 5. Create the dataset and load it into the model:
 ```bash
-My_Model.x_train = features
-My_Model.y_train = labels
-My_Model.x_test = ...
-My_Model.y_test = ...
+My_Model.x_train, My_Model.y_train = create_dataset(DATA_PATH + 'train/', MAX_SEQ_LEN, NUM_FEATURES)
+My_Model.x_test, My_Model.y_test = create_dataset(DATA_PATH + 'test/', MAX_SEQ_LEN, NUM_FEATURES)
 ```
 
 #### 7. Train the model:
