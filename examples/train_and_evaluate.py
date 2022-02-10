@@ -1,35 +1,52 @@
 
 # Import the needed tools
 import numpy as np
-from sfc.util import create_dataset
 from sfc.models.Attention_RNN import Attention_RNN
+from sfc.models.CNN_FF import CNN_FF
+from sfc.models.FF import FF
 
 # Define some constants
-DATA_PATH = './dataset/'
-MAX_SEQ_LEN = 4
-NUM_FEATURES = 24
-My_Model_Logs_DIR = './logs/'
-My_Model_Weights = My_Model_Logs_DIR + 'Best_Attention_RNN_ckpt.h5'
+DATA_PATH = './dataset_sd/'
+MAX_SEQ_LEN = 1
+NUM_FEATURES = 640
+LSTM_units = 32
+Logs_DIR = './logs_sd/'
 
-# Create the model
-My_Model = Attention_RNN(   Logs_DIR=My_Model_Logs_DIR,
-                            LSTM_units=32,
-                            seq_n_timesteps=4,
-                            seq_n_features_in=24,
-                            seq_n_features_out=1,
-                            Print_Model_Summary=True)
 
-# Create the dataset and load it into the model
-My_Model.x_train, My_Model.y_train = create_dataset(DATA_PATH + 'train/', MAX_SEQ_LEN, NUM_FEATURES)
-My_Model.x_test, My_Model.y_test = create_dataset(DATA_PATH + 'test/', MAX_SEQ_LEN, NUM_FEATURES)
+def TrainEvaluate(model, log_dir, data_path):
+    My_Model_Logs_DIR = log_dir + model + '/'
 
-# Train the model
-My_Model.Fit()
+    # Create the model
+    if model is 'FF': 
+        My_Model = FF(  Logs_DIR=My_Model_Logs_DIR,
+                        num_features=NUM_FEATURES,
+                        Print_Model_Summary=True)
+    if model is 'CNN_FF': 
+        My_Model = CNN_FF(   Logs_DIR=My_Model_Logs_DIR,
+                                num_features=NUM_FEATURES,
+                                Print_Model_Summary=True)
+    if model is 'Attention_RNN' : 
+        My_Model = Attention_RNN(   Logs_DIR=My_Model_Logs_DIR,
+                                    LSTM_units=LSTM_units,
+                                    seq_n_timesteps=MAX_SEQ_LEN,
+                                    seq_n_features_in=NUM_FEATURES,
+                                    Print_Model_Summary=True)
 
-# Evaluate the model
-My_Model.Load_Model(My_Model_Weights)
-My_Model.Evaluate()
+    # Create the dataset and load it into the model
+    My_Model.x_train, My_Model.y_train = My_Model.Create_Dataset(data_path + 'train/')
+    My_Model.x_test, My_Model.y_test = My_Model.Create_Dataset(data_path + 'test/')
 
-# Predict using the model
-# label = My_Model.Predict(features[50])
-# print(label)
+    # Train the model
+    My_Model.Fit()
+
+    # Evaluate the model
+    My_Model.Load_Model()
+    My_Model.Evaluate()
+
+    # # Predict using the model
+    label = My_Model.Predict(My_Model.x_test)
+
+
+if __name__ == '__main__':
+    for model in ['FF', 'CNN_FF', 'Attention_RNN']:
+        TrainEvaluate(model, Logs_DIR, DATA_PATH) # TODO: you should also pass the model_params
